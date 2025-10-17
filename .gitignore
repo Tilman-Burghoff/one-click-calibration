@@ -1,0 +1,8 @@
+
+*.exe
+*.g
+*.h5
+z.log.global
+build/
+.vscode/
+__pycache__/
