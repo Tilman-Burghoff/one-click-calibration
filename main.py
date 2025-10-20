@@ -29,7 +29,7 @@ def main():
     data_collector.run()
     del data_collector
 
-    out = subprocess.getoutput(f'./optimize.exe')
+    out = subprocess.getoutput(f'./optimize.exe --data_file {params.output_file} {"--optimize_joints" if params.optimize_joints else ""}')
     if re.match(r'\[(?:-?0\.\d*, ){6}-?0\.\d*\]\n0\.\d*', out) is None: # expected output format: [x,y,z,qw,qx,qy,qz]\nRMSE
         raise RuntimeError('optimize.exe encountered Error:\n'+out)
     

@@ -16,6 +16,6 @@ class Parameters:
     config_file: str = '/../../../../../$RAI_PATH/scenarios/pandaSingle.g'
     panda_prefix: str = 'l_'
     camera_name: str = 'cameraWrist',
-    optimize_joint_angles: bool = False
+    optimize_joints: bool = False
 
 defaults = Parameters()
