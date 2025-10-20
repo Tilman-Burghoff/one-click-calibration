@@ -117,9 +117,14 @@ class DataCollection:
             joint_states.append(self.C.getJointState())
             rgb, depth = self.bot.getImageAndDepth(self.params.camera_name)
             corners, ids, _ = aruco.detectMarkers(rgb, self.aruco_dict, parameters=self.aruco_params)
+
             if ids is None:
                 return None
+            
             for id, corner in zip(ids.flatten(), corners):
+                if id not in self.params.marker_ids: # filter out artifacts
+                    continue
+
                 pixel_coord = corner[0, 0, :].astype(int)
                 d = self._bilinear_depth_interpolation(depth, pixel_coord[0], pixel_coord[1])
                 if id not in coords:

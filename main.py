@@ -13,7 +13,7 @@ def write_g_file(Q):
 def parse_args() -> Parameters:
     parser = argparse.ArgumentParser(description='Collect Data and Optimize Camera Pose')
     for field in Parameters.__dataclass_fields__.values():
-        type_string = str(field.type).split("'")[1]
+        type_string = str(field.type).removeprefix("<class '").removesuffix("'>")
         parser.add_argument(
             f'--{field.name}', 
             type=field.type, 
@@ -29,7 +29,7 @@ def main():
     data_collector.run()
     del data_collector
 
-    out = subprocess.getoutput(f'./optimize.exe --data_file {params.output_file} {"--optimize_joints" if params.optimize_joints else ""}')
+    out = subprocess.getoutput(f'./optimize.exe -data-file {params.output_file} {"-opt-joints" if params.optimize_joints else ""}')
     if re.match(r'\[(?:-?0\.\d*, ){6}-?0\.\d*\]\n0\.\d*', out) is None: # expected output format: [x,y,z,qw,qx,qy,qz]\nRMSE
         raise RuntimeError('optimize.exe encountered Error:\n'+out)
     
