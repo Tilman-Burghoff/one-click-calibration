@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import TypeAlias
 import json
 
@@ -8,26 +7,10 @@ from robotic.src import h5_helper
 import numpy as np
 from cv2 import aruco
 
+from parameters import Parameters, defaults
+
 
 MarkerPositions: TypeAlias = dict[int, np.ndarray]
-
-@dataclass
-class Parameters:
-    number_of_poses: int = 5
-    images_per_pose: int = 10
-    min_distance: float = .2
-    max_distance: float = .7
-    min_angle: float = 0
-    max_angle: float = 1/4 * np.pi
-    max_target_offset: float = 0.05
-    seed: int = 0
-    output_file: str = 'aruco_calibration_data.h5'
-    marker_positions_file: str = 'marker_positions.json'
-    config_file: str = '/../../../../../$RAI_PATH/scenarios/pandaSingle.g'
-    panda_prefix: str = 'l_'
-    camera_name: str = 'cameraWrist'
-
-defaults = Parameters()
 
 class DataCollection:
     def __init__(self, 
@@ -134,9 +117,14 @@ class DataCollection:
             joint_states.append(self.C.getJointState())
             rgb, depth = self.bot.getImageAndDepth(self.params.camera_name)
             corners, ids, _ = aruco.detectMarkers(rgb, self.aruco_dict, parameters=self.aruco_params)
+
             if ids is None:
                 return None
+            
             for id, corner in zip(ids.flatten(), corners):
+                if id not in self.params.marker_ids: # filter out artifacts
+                    continue
+
                 pixel_coord = corner[0, 0, :].astype(int)
                 d = self._bilinear_depth_interpolation(depth, pixel_coord[0], pixel_coord[1])
                 if id not in coords:

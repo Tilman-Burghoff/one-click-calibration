@@ -1,5 +1,4 @@
 #include "calibration.h"
-
 #include <Core/util.h>
 
 //===========================================================================
@@ -8,11 +7,13 @@ int main(int argc, char** argv){
   rai::initCmdLine(argc, argv);
   rai::setRaiPath("$HOME/git/rai-robotModels");
 
+  bool optimize_joints = rai::checkCmdLineTag("opt-joints");
+  char* data_file = rai::getCmdLineArgument("data-file");
   // rnd.seed_random();
 
   // display_data();
-  CalibFromArucos cal(false);
-  cal.load_data();
+  CalibFromArucos cal(optimize_joints);
+  cal.load_data(data_file!=nullptr ? data_file : "aruco_calibration_data.h5");
   // cal.display_data();
   cal.solve();
 

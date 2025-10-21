@@ -16,7 +16,7 @@ struct CalibFromArucos{
   rai::Frame* Fcam;
   DofL stableDofs, qDofs;
 
-  rai::String aruco_parent = rai::String("table"); 
+  rai::String aruco_parent = rai::String("l_panda_base"); 
 
   //parameters
   double fx = 318.814, fy = 318.814, px = 320.990, py = 177.566;
