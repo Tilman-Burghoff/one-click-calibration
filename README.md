@@ -12,6 +12,6 @@ After compiling, just run main.py to collect data and optimize the position.
 
 If you do not use the calibration plate, you have to manually configure the aruco-positions by running ```measure_marker_positions.py``` before starting the calibration process.
 
-To see the possible command line arguments, run ```main`py -h```
+To see the possible command line arguments, run ```main.py -h```
 
 This is still WIP, no guarantees that it works out of the box yet :)
