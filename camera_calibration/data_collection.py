@@ -29,7 +29,7 @@ class DataCollection:
         self.params = params
         self.h5_writer = h5_helper.H5Writer(self.params.output_file)
 
-        self.aruco_dict = aruco.getPredefinedDictionary(aruco.DICT_4X4_100)
+        self.aruco_dict = aruco.getPredefinedDictionary(params.marker_dict)
         self.aruco_params = aruco.DetectorParameters_create()
         self.aruco_params.cornerRefinementMethod = aruco.CORNER_REFINE_SUBPIX
 
@@ -171,7 +171,7 @@ class DataCollection:
                 continue
             coords[id] /= count[id]
         if len(coords) == 0:
-            raise RuntimeError("Not enough sucessfull detection for averaging")
+            raise RuntimeError("Not enough successful detections for averaging")
         return np.mean(joint_states, axis=0), coords
     
 
