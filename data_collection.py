@@ -68,6 +68,7 @@ class DataCollection:
                 continue
 
             joint_states, marker_coords = result
+            print(f"Dataset {i}: Collected {len(marker_coords)} markers")
             self._write_data(i, marker_coords, joint_states)
 
             i += 1
@@ -124,14 +125,17 @@ class DataCollection:
             for id, corner in zip(ids.flatten(), corners):
                 if id not in self.params.marker_ids: # filter out artifacts
                     continue
-
-                pixel_coord = corner[0, 0, :].astype(int)
-                d = self._bilinear_depth_interpolation(depth, pixel_coord[0], pixel_coord[1])
+                
+                d = 0
+                for i in range(4):
+                    pixel_coord = corner[0, i, :].astype(int)
+                    d += self._bilinear_depth_interpolation(depth, pixel_coord[0], pixel_coord[1])
+                center = np.concatenate([np.mean(corner[0, :, :], axis=0), [d/4]])
                 if id not in coords:
-                    coords[id] = np.concatenate([corner[0, 0, :], [d]])
+                    coords[id] = center
                     count[id] = 1
                 else:
-                    coords[id] += np.concatenate([corner[0, 0, :], [d]])
+                    coords[id] += center
                     count[id] += 1
             
         if len(coords) == 0:
