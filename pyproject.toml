@@ -1,7 +1,7 @@
 [project]
 name = "camera_calibration"
 version = "0.1.0"
-description = "Add your description here"
+description = "runs end-to-end camera calibration"
 readme = "README.md"
 authors = [
     { name = "Tilman Burghoff", email = "t.burghoff@campus.tu-berlin.de" }
@@ -12,12 +12,24 @@ dependencies = [
     "numpy >= 2.0.0",
     "opencv-python >= 4.7.0",
     "h5py",
-    "pybind11>=3.0.1",
 ]
 
 [project.scripts]
 camera_calibration = "camera_calibration.cli:cli"
 
 [build-system]
-requires = ["uv_build>=0.9.5,<0.10.0"]
-build-backend = "uv_build"
+requires = [
+  "scikit-build-core",
+    "robotic>=0.3.5",
+    "numpy >= 2.0.0"
+]
+build-backend = "scikit_build_core.build"
+
+[tool.scikit-build]
+build-dir = "build/{wheel_tag}"
+wheel.packages = ["camera_calibration"]
+
+[tool.scikit-build.cmake]
+source-dir = "camera_calibration/komo-aruco-calibration"
+verbose = true
+minimum-version = "3.15"

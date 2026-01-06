@@ -37,8 +37,14 @@ class DataCollection:
         self.C.addFile(self.params.config_file)
         self._setup_markers()
 
-        self.bot = ry.BotOp(self.C, True)
-        self.bot.getImageAndDepth(self.params.camera_name) # initialize camera
+        try:
+            self.bot = ry.BotOp(self.C, True)
+            self.bot.getImageAndDepth(self.params.camera_name) # initialize camera
+        except Exception as e:
+            raise RuntimeError("Failed to initialize BotOp. Make sure that you are connected to a panda robot"\
+                               + "(https://marctoussaint.github.io/robotic/tutorials/botop_2_real_robot.html)\n" \
+                               + "and that a realsense camera is connected.") from e
+        
 
         self.target = self.C.addFrame('target')
 

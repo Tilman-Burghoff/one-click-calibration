@@ -51,7 +51,7 @@ class Parameters:
     marker_dict: int = aruco.DICT_4X4_100
     marker_ids: tuple[int] = (0, 1, 2, 3, 4, 5, 6, 7, 8)
     output_file: str = 'aruco_calibration_data_test.h5'
-    marker_positions_file: str = 'src/camera_calibration/marker_positions.json'
+    marker_positions_file: str = 'camera_calibration/marker_positions.json'
     config_file: str = '/../../../../../$RAI_PATH/scenarios/pandaSingle.g'
     panda_prefix: str = 'l_'
     camera_name: str = 'cameraWrist'

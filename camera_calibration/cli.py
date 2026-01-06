@@ -3,6 +3,8 @@ from . import DataCollection
 import subprocess
 import re
 import argparse
+import importlib
+import os
 
 def write_g_file(Q):
     with open('pandaSingle_fixedCam.g', 'w') as f:
@@ -28,8 +30,15 @@ def cli():
     data_collector = DataCollection(params)
     data_collector.run()
     del data_collector
+    
+    spec = importlib.util.find_spec("camera_calibration")
+    if spec is None or spec.origin is None:
+        raise RuntimeError("camera_calibration module not found")
+    module_dir = spec.submodule_search_locations[0]
 
-    out = subprocess.getoutput(f'./optimize.exe -data-file {params.output_file} {"-opt-joints" if params.optimize_joints else ""}')
+    print("Using module dir:", spec.submodule_search_locations)
+
+    out = subprocess.getoutput(f'{module_dir}/optimize.exe -data-file {params.output_file} {"-opt-joints" if params.optimize_joints else ""}')
     if re.match(r'\[(?:-?0\.\d*, ){6}-?0\.\d*\]\n0\.\d*', out) is None: # expected output format: [x,y,z,qw,qx,qy,qz]\nRMSE
         raise RuntimeError('optimize.exe encountered Error:\n'+out)
     
@@ -40,4 +49,5 @@ def cli():
     write_g_file(pose)
 
 if __name__ == "__main__":
+    print("hi")
     cli()
