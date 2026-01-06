@@ -5,7 +5,7 @@ __authors__ = ["Tilman Burghoff"]
 __version__ = 0.1
 
 
-from typing import TypeAlias
+from typing import TypeAlias, Optional
 import json
 
 import robotic as ry
@@ -14,7 +14,7 @@ from robotic.src import h5_helper
 import numpy as np
 from cv2 import aruco
 
-from parameters import Parameters, defaults
+from . import Parameters
 
 
 MarkerPositions: TypeAlias = dict[int, np.ndarray]
@@ -24,13 +24,13 @@ class DataCollection:
     specified by the parameters object.
     """
     def __init__(self, 
-                 params: Parameters=defaults):
+                 params: Optional[Parameters]=None):
         
         self.params = params
         self.h5_writer = h5_helper.H5Writer(self.params.output_file)
 
         self.aruco_dict = aruco.getPredefinedDictionary(params.marker_dict)
-        self.aruco_params = aruco.DetectorParameters_create()
+        self.aruco_params = aruco.DetectorParameters()
         self.aruco_params.cornerRefinementMethod = aruco.CORNER_REFINE_SUBPIX
 
         self.C = ry.Config()

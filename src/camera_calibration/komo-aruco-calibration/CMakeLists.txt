@@ -26,6 +26,7 @@ message(STATUS "[rai] python site: " ${PY_LIB_SITE})
 
 include_directories(
   ${PY_LIB_SITE}/robotic/include/rai
+#  /usr/include/python3.10/include
 #  $ENV{HOME}/git/rai/src
   )
 

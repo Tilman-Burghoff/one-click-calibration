@@ -48,10 +48,10 @@ class Parameters:
     max_angle: float = 1/4 * pi
     max_target_offset: float = 0.05
     seed: int = 0
-    marker_dict: aruco.Dictionary = aruco.getPredefinedDictionary(aruco.DICT_4X4_100)
+    marker_dict: int = aruco.DICT_4X4_100
     marker_ids: tuple[int] = (0, 1, 2, 3, 4, 5, 6, 7, 8)
-    output_file: str = 'aruco_calibration_data.h5'
-    marker_positions_file: str = 'marker_positions.json'
+    output_file: str = 'aruco_calibration_data_test.h5'
+    marker_positions_file: str = 'src/camera_calibration/marker_positions.json'
     config_file: str = '/../../../../../$RAI_PATH/scenarios/pandaSingle.g'
     panda_prefix: str = 'l_'
     camera_name: str = 'cameraWrist'

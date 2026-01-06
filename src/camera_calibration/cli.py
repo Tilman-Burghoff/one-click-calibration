@@ -1,5 +1,5 @@
-from parameters import Parameters
-from data_collection import DataCollection
+from . import Parameters
+from . import DataCollection
 import subprocess
 import re
 import argparse
@@ -23,7 +23,7 @@ def parse_args() -> Parameters:
     args = parser.parse_args()
     return Parameters(**vars(args))
 
-def main():
+def cli():
     params = parse_args()
     data_collector = DataCollection(params)
     data_collector.run()
@@ -40,4 +40,4 @@ def main():
     write_g_file(pose)
 
 if __name__ == "__main__":
-    main()
+    cli()

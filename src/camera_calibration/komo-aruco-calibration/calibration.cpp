@@ -112,7 +112,7 @@ CalibFromArucos::CalibFromArucos(bool calibJoints){
 void CalibFromArucos::load_data(const char* file){
   auto h5 = rai::H5_Reader(file);
   auto manifest = h5.readDict("manifest");
-  uint n = manifest.get<double>("n_datasets");
+  uint n =  manifest.get<double>("n_datasets");
   Q.resize(n);
   P.resize(n);
   I.resize(n);
